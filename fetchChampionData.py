@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
 import sys
-from lolstatsLib import *
+from lolstatsLib.account import *
+from lolstatsLib.league import *
+from lolstatsLib.champions import *
 
 a = Account(sys.argv[1])
 c = Champions(a)
-print(c.championListToHTML(c.getTopChampions(5)))
+print(c.championListToHTMLTable())

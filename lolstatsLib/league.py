@@ -6,44 +6,52 @@ class LeagueTypes(Enum):
     SOLO = "RANKED_SOLO_5x5"
     FLEX = "RANKED_FLEX_SR"
 class League:
-    def __init__(self, account, leaguetype):
+    def __init__(self, account):
         net = Networking()
         self.leagueJson = json.loads(net.doLeagueRequest(account))
-        for i in range(0, len(self.leagueJson)):
-            if self.leagueJson[i]['queueType'] == str(leaguetype.value):
-                self.leagueJson = self.leagueJson[i]
     def getJson(self):
         return self.leagueJson
-    def getLeagueId(self):
-        return self.leagueJson["leagueid"]
-    def getSummonerId(self):
-        return self.leagueJson["summonerid"]
-    def getSummonerName(self):
-        return self.leagueJson["summonerName"]
-    def getQueueType(self):
-        return self.leagueJson["queueType"]
-    def getTier(self):
-        return self.leagueJson["tier"]
-    def getRank(self):
-        return self.leagueJson["rank"]
-    def getLeaguePoints(self):
-        return self.leagueJson["leaguePoints"]
-    def getWins(self):
-        return self.leagueJson["wins"]
-    def getLosses(self):
-        return self.leagueJson["losses"]
-    def getHotStreak(self):
-        return self.leagueJson["hotStreak"]
-    def getVeteran(self):
-        return self.leagueJson["veteran"]
-    def getFreshBlood(self):
-        return self.leagueJson["freshBlood"]
-    def getInactive(self):
-        return self.leagueJson["inactive"]
+    def getLeagueId(self, leaguetype):
+        return self.leagueJson[leaguetype]["leagueid"]
+    def getSummonerId(self, leaguetype):
+        return self.leagueJson[leaguetype]["summonerid"]
+    def getSummonerName(self, leaguetype):
+        return self.leagueJson[leaguetype]["summonerName"]
+    def getQueueType(self, leaguetype):
+        return self.leagueJson[leaguetype]["queueType"]
+    def getTier(self, leaguetype):
+        return self.leagueJson[leaguetype]["tier"]
+    def getRank(self, leaguetype):
+        return self.leagueJson[leaguetype]["rank"]
+    def getLeaguePoints(self, leaguetype):
+        return self.leagueJson[leaguetype]["leaguePoints"]
+    def getWins(self, leaguetype):
+        return self.leagueJson[leaguetype]["wins"]
+    def getLosses(self, leaguetype):
+        return self.leagueJson[leaguetype]["losses"]
+    def getHotStreak(self, leaguetype):
+        return self.leagueJson[leaguetype]["hotStreak"]
+    def getVeteran(self, leaguetype):
+        return self.leagueJson[leaguetype]["veteran"]
+    def getFreshBlood(self, leaguetype):
+        return self.leagueJson[leaguetype]["freshBlood"]
+    def getInactive(self, leaguetype):
+        return self.leagueJson[leaguetype]["inactive"]
 
-    def getWinLoseRatio(self):
-        return int(self.leagueJson["wins"]) / int(self.leagueJson["losses"])
-    def getWinsInPercent(self):
-        return 100 * int(self.leagueJson["losses"]) / (int(self.leagueJson["wins"])+int(self.leagueJson["losses"]))
-    def getLossesInPercent(self):
-        return 100 * int(self.leagueJson["losses"]) / (int(self.leagueJson["wins"])+int(self.leagueJson["losses"]))
+    def getWinLoseRatio(self, leaguetype):
+        return float(self.leagueJson[leaguetype]["wins"]) / float(self.leagueJson[leaguetype]["losses"])
+    def getWinsInPercent(self, leaguetype):
+        return 100 * float(self.leagueJson[leaguetype]["wins"]) / (float(self.leagueJson[leaguetype]["wins"])+float(self.leagueJson[leaguetype]["losses"]))
+    def getLossesInPercent(self, leaguetype):
+        return (100 * float(self.leagueJson[leaguetype]["losses"]) / (float(self.leagueJson[leaguetype]["wins"])+float(self.leagueJson[leaguetype]["losses"])))
+
+    def printLeagueInfoToHTML(self):
+        out = "<table border='1'><tr><th>Type</th><th>League</th><th>Points</th></tr>"
+        for liga in self.leagueJson:
+            if liga["queueType"] == "RANKED_FLEX_SR":
+                a = "Flex"
+            if liga["queueType"] == "RANKED_SOLO_5x5":
+                a = "Solo"
+            out += "<tr><td>" + a + "</td><td>" + liga["tier"].lower().capitalize() + " " + str(liga["rank"]) + "</td><td>" + str(liga["leaguePoints"]) + "</td></tr>"
+        out += "</table>"
+        return out

@@ -8,8 +8,9 @@
     if($_GET['name'] != NULL) {
         echo("<title>LolStats - ".$_GET['name']."</title>");
         function printSummonerStats() {
-            $summonerStats = exec("python fetchSummonerData.py '" . $_GET['name'] . "'");
+            $summonerStats = exec("python3 fetchSummonerData.py '" . $_GET['name'] . "'");
             $summonerStatsArr = explode(".", $summonerStats);
+            echo("<h1>Summoner</h1>");
             echo
             ("
                 <table border='1'>
@@ -21,16 +22,21 @@
                         <td>$summonerStatsArr[0]</td>
                         <td>$summonerStatsArr[1]</td>
                     </tr>
-                </table>
+                </table><br>
             ");
         }
         function printSummonerChampions() {
-            $championStats = exec("python fetchChampionData.py '" . $_GET['name'] . "'");
+            $championStats = exec("python3 fetchChampionData.py '" . $_GET['name'] . "'");
+            echo("<h1>Champions</h1>");
             echo($championStats);
         }
-        echo("<h3>Summoner</h3>");
+        function printLeagueInfo() {
+            $leagueInfo = exec("python3 fetchLeagueData.py '" . $_GET['name'] . "'");
+            echo("<h1>Ranked</h1>");
+            echo($leagueInfo);
+        }
         printSummonerStats();
-        echo("<h3>Top 5 Champs</h3>");
+        printLeagueInfo();
         printSummonerChampions();
     }
     else {

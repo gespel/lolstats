@@ -8,5 +8,5 @@ l = League(a, LeagueTypes.SOLO)
 c = Champions(a)
 
 #print(a.getLevel())
-#print(l.getTier())
-c.printChampionScoreAndLevelWithNames()
+print(l.getLossesInPercent())
+#print(c.championListToHTMLTable())
