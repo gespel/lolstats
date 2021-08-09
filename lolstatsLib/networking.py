@@ -16,4 +16,6 @@ class Networking:
     def doLeagueRequest(self, account):
         return requests.get("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + account.getId(), headers=self.header).content.decode('utf-8')
     def doChampionsRequest(self, account):
-        return requests.get("https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/"+account.getId(), headers=self.header).content.decode('utf-8')
+        return requests.get("https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/" + account.getId(), headers=self.header).content.decode('utf-8')
+    def doGameRequest(self, account):
+        return requests.get("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + account.getId(), headers=self.header).content.decode('utf-8')

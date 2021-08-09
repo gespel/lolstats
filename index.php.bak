@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="style.css">
+<center>
+<form action = "index.php" method = "get" />
+	<p>Enter the summoner name:</p>
+	<input type = "text" name = "name" />
+	<input type = "submit" name = "game" value = "Game"/>
+	<input type = "submit" name = "summoner" value = "Summoner"/>
+</form>
+<center>
+<?php
+    function printSummonerStats() {
+        $summonerStats = exec("python3 fetchSummonerData.py '" . $_GET['name'] . "'");
+        $summonerStatsArr = explode(".", $summonerStats);
+        echo("<h1>Summoner</h1>");
+        echo
+        ("
+            <table border='1'>
+                <tr>
+                    <th>Name</th>
+                    <th>Level</th>
+                </tr>
+                <tr>
+                    <td>$summonerStatsArr[0]</td>
+                    <td>$summonerStatsArr[1]</td>
+                </tr>
+            </table><br>
+        ");
+    }
+    function printSummonerChampions() {
+        $championStats = exec("python3 fetchChampionData.py '" . $_GET['name'] . "'");
+        echo("<h1>Champions</h1>");
+        echo($championStats);
+    }
+    function printLeagueInfo() {
+        $leagueInfo = exec("python3 fetchLeagueData.py '" . $_GET['name'] . "'");
+        echo("<h1>Ranked</h1>");
+        echo($leagueInfo);
+    }
+    function printGameInfo() {
+        $gameInfo = exec("python3 fetchGameData.py '" . $_GET['name'] . "'");
+        echo("<h1>Game</h1>");
+        echo($gameInfo);
+    }
+    function main() {
+        if($_GET['name'] != NULL) {
+            echo("<title>LolStats - ".$_GET['name']."</title>");
+
+            if(isset($_GET['summoner'])) {
+                echo("<div id='summoner'>");
+                printSummonerStats();
+                echo("</div><div id='ranked'>");
+                printLeagueInfo();
+                echo("</div><div id='champions'>");
+                printSummonerChampions();
+                echo("</div>");
+            }
+            if(isset($_GET['game'])) {
+                echo("<div id='game'>");
+                printGameInfo();
+                echo("</div>");
+            }
+        }
+        else {
+            echo("<title>LolStats</title>");
+        }
+    }
+    main();
+?>
+</center>
+</html>

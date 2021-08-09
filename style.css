@@ -1,0 +1,18 @@
+#game {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 60px;
+}
+#summoner {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 60px;
+}
+
+#ranked {
+    display: inline-block;
+    vertical-align: top;
+}
+#wrapper {
+
+}

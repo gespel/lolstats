@@ -1,10 +1,22 @@
 import json
 from .networking import Networking
 
+class Champion:
+    def __init__(self, id):
+        self.championName = self.getNameById(id)
+        self.id = id
+    def getNameById(self, Id):
+        with open('champion.json', encoding='utf-8') as fh:
+            championsData = json.load(fh)
+        for champion in championsData:
+            if champion["key"] == Id:
+                return champion["id"]
+
 class Champions:
     def __init__(self, account):
         net = Networking()
         self.championsJson = json.loads(net.doChampionsRequest(account))
+        #self.championsJson
     def getJson(self):
         return self.championsJson
     def getNameById(self, Id):
@@ -38,13 +50,14 @@ class Champions:
         name = ""
         with open('champion.json', encoding='utf-8') as fh:
             championsData = json.load(fh)
+        #print(championsData['data'])
         out = "<table border='1'><tr><th></th><th>Champion</th><th>Level</th><th>Points</th></tr>"
         for champion in self.championsJson:
-            for champion2 in championsData:
-                if champion2["key"] == str(champion["championId"]):
-                    icon = champion2["icon"]
-                    name = champion2["name"]
-            out += "<tr><td><img src='" + icon + "' style='width:48px;height:48px;'></td><td>" + name + "</td><td>" + str(champion["championLevel"]) + "</td><td>" + str(champion["championPoints"]) + "</td></tr>"
+            for champion2 in championsData["data"]:
+                if championsData["data"][champion2]["key"] == str(champion["championId"]):
+                    icon = championsData["data"][champion2]["image"]["full"]
+                    name = championsData["data"][champion2]["id"]
+            out += "<tr><td><img src='http://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/" + icon + "' style='width:48px;height:48px;'></td><td>" + name + "</td><td>" + str(champion["championLevel"]) + "</td><td>" + str(champion["championPoints"]) + "</td></tr>"
         out += "</table>"
         return out
     def getChampionScore(self, name):
